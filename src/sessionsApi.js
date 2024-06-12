@@ -44,22 +44,32 @@ export const getSessions = async () => {
 // THE URL OF THE UPLOADED FILE FROM THE FRONT END FAILS -- seems to be correct now (euclidean) ✅ and PINECONE connection was failing - moved to local
 export const addSession = async (data) => {
   toast.info("Creating your session, this will only take a minute or two");
-  const res = await basicUpload({
-    accountId: import.meta.env.VITE_BYTESCALE_ACCOUNT,
-    apiKey: import.meta.env.VITE_BYTESCALE_KEY,
-    requestBody: data.file,
-  });
-  const newData = {
-    url: res["fileUrl"],
-    requirement: data.requirement,
-  };
-  const response = await api.post("/api/sessions/", newData, {
-    "Content-Type": "application/json",
-  });
-  const newSession = response.data;
-  const { sessions, setSessions } = useSessionsStore.getState();
-  setSessions([...sessions, newSession]);
-  toast.success("Study session created, you can find it on the sidebar now");
+  try {
+    const res = await basicUpload({
+      accountId: import.meta.env.VITE_BYTESCALE_ACCOUNT,
+      apiKey: import.meta.env.VITE_BYTESCALE_KEY,
+      requestBody: data.file,
+    });
+    console.log("Upload response from bytescale:", res); // Add this line
+    const newData = {
+      url: res["fileUrl"],
+      requirement: data.requirement,
+    };
+    console.log("Data to be sent to backend", newData);
+    const response = await api.post("/api/sessions/", newData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log("API response:", response.data); // Add this line
+    const newSession = response.data;
+    const { sessions, setSessions } = useSessionsStore.getState();
+    setSessions([...sessions, newSession]);
+    toast.success("Study session created, you can find it on the sidebar now");
+  } catch (error) {
+    toast.error("Something went wrong");
+    console.error("Something went wrong", error);
+  }
 };
 
 // IF CURRENTLY ON SESSIONVIEW, DELETED CARDS REMAIN THERE

@@ -15,7 +15,9 @@ function UploadSection() {
       await addSession(data);
     } catch (error) {
       toast.error("Something went wrong");
-      console.error("Something went wrong", error);
+      console.error("Error response data:", error.response.data);
+      console.error("Error response status:", error.response.status);
+      console.error("Error response headers:", error.response.headers);
     } finally {
       setIsLoading(false);
       reset();

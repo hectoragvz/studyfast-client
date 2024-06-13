@@ -38,7 +38,7 @@ function Form({ route, method }) {
     <>
       <div className="h-dvh px-4 py-10 md:py-20">
         <div className="text-center flex flex-col max-w-md mx-auto">
-          <h1 className=" text-2xl font-semibold ">{name} to makeflashcards</h1>
+          <h1 className=" text-2xl font-semibold ">{name} to studyfast.io</h1>
           {name === "Register" && (
             <span className="mt-2 bg-yellow-400 mx-auto font-medium">
               The shortest, fastest, best way to practice active recall

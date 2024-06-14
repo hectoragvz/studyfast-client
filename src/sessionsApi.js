@@ -50,18 +50,15 @@ export const addSession = async (data) => {
       apiKey: import.meta.env.VITE_BYTESCALE_KEY,
       requestBody: data.file,
     });
-    console.log("Upload response from bytescale:", res); // Add this line
     const newData = {
       url: res["fileUrl"],
       requirement: data.requirement,
     };
-    console.log("Data to be sent to backend", newData);
     const response = await api.post("/api/sessions/", newData, {
       headers: {
         "Content-Type": "application/json",
       },
     });
-    console.log("API response:", response.data); // Add this line
     const newSession = response.data;
     const { sessions, setSessions } = useSessionsStore.getState();
     setSessions([...sessions, newSession]);
